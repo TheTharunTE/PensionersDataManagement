@@ -1,0 +1,45 @@
+{
+  "name": "PensionersApp",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^8",
+    "@sap-cloud-sdk/resilience": "^3.16.0",
+    "@sap-cloud-sdk/http-client": "^3.16.0",
+    "express": "^4",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-types": "^0.6",
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8",
+    "rimraf": "^5.0.5",
+    "@sap/ux-specification": "UI5-1.128",
+    "@sap/dev-cap-tools": "^1.31.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-pensionersui": "cds watch --open pensionersui/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy PensionersApp --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+  },
+  "cds": {
+    "requires": {
+      "auth": "dummy",
+      "destinations": true,
+      "sfodataservice": {
+        "credentials": {
+          "url": "https://api68sales.successfactors.com"
+        },
+        "kind": "rest"
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  }
+}
